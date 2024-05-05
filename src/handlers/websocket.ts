@@ -20,17 +20,31 @@ class WebsocketRequest extends Request {
     let vehicles = this.listener.vehicles;
 
     this.request.on('connect', () => {
-      this.request.on('authenticated', () => {
-        for (const vehicle of vehicles) {
-          this.request.on('track:' + vehicle.imei, response => {
-            if (response.status == 200)
-              this.locate(response.data)
+      console.log('connected', vehicles);
+    })
+    .emit('authenticate', {token: this.token})
 
-            this.update(response.status)
+    this.request.on('authenticated', () => {
+      console.log('authenticated');
+    })
+
+    this.request.onAny((socketEvent, response) => {
+      let d = response.data;
+      let event = socketEvent.split(":");
+      let eventType = event[0];
+
+      if (response.status == 200) {
+        if(eventType == "track") {
+          this.locate(d)
+        } else if(eventType == "status") {
+          this.status({
+            event: socketEvent,
+            data: d
           })
         }
-      })
-      .emit('authenticate', {token: this.token});
+      }
+
+      this.update(response.status)
     });
   }
 

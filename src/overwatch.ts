@@ -15,6 +15,9 @@ class Overwatch {
     xhttp: {}
   };
 
+  //check this connected
+  static _connected: boolean = false;
+
   /**
    * The default driver name.
    *
@@ -55,6 +58,7 @@ class Overwatch {
   driver(service: string): Resolver {
     if (this.drivers[service] !== null) {
       this.drivers[service] = this.createDriver(service);
+      Overwatch._connected = true;
     }
 
     return this.drivers[service];
