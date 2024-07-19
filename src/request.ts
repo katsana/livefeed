@@ -39,6 +39,18 @@ export abstract class Request {
   }
 
   /**
+   * Status update.
+   *
+   * @param {any} data
+   */
+  status(data: any): void {
+    //added v1: check function exists 
+    if (typeof this.listener.status === 'function') {
+      this.listener.status(data);
+    }
+  }
+  
+  /**
    * Update status.
    *
    * @param {number = 200} status

@@ -28,10 +28,20 @@ class WebsocketRequest extends Request {
 
             this.update(response.status)
           })
+
+          this.request.on('status:' + vehicle.imei, response => {
+            if (response.status == 200)
+              this.status({
+                event: 'status:' + vehicle.imei,
+                data: response.data
+              })
+
+            this.update(response.status)
+          })
         }
       })
-      .emit('authenticate', {token: this.token});
-    });
+      ;
+    }).emit('authenticate', {token: this.token});
   }
 
   /**

@@ -7,6 +7,13 @@ interface Listener {
   locate(data: any): void;
 
   /**
+   * Vehicle status data.
+   *
+   * @param {object} data
+   */
+  status(data: any): void;
+
+  /**
    * Update the listener with response status.
    *
    * @param {number} status
